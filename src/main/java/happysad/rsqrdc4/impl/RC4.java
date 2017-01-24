@@ -28,31 +28,33 @@ public class RC4 implements IEncrypt, IDecrypt {
 		}
 	}
 	
-	public byte[] encrypt(byte[] data) {
+	public byte[] encrypt(byte[] data, int rounds) {
 		final byte[] cipherdata = new byte[data.length];
 		
 		int i = 0, j = 0;
 		int k, t;
 		
-		for(int c = 0; c < data.length; c++) {
-			i = (i + 1) & 0xFF;
-			j = (j + S[i]) & 0xFF;
-			
-			byte tmp = S[j];
-			S[j] = S[i];
-			S[i] = tmp;
-			
-			t = (S[i] + S[j]) & 0xFF;
-			k = S[t];
-			
-			cipherdata[c] = (byte) (data[c] ^ k);
+		for(int x = 0; x < rounds; x++) {
+			for(int c = 0; c < data.length; c++) {
+				i = (i + 1) & 0xFF;
+				j = (j + S[i]) & 0xFF;
+				
+				byte tmp = S[j];
+				S[j] = S[i];
+				S[i] = tmp;
+				
+				t = (S[i] + S[j]) & 0xFF;
+				k = S[t];
+				
+				cipherdata[c] = (byte) (data[c] ^ k);
+			}
 		}
 		
 		return cipherdata;
 	}
 	
-	public byte[] decrypt(byte[] data) {
+	public byte[] decrypt(byte[] data, int rounds) {
 		
-		return encrypt(data);
+		return encrypt(data, rounds);
 	}
 }

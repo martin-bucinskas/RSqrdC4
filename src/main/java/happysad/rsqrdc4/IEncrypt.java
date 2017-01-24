@@ -4,5 +4,5 @@ public interface IEncrypt {
 	
 	public void init(byte[] key);
 	
-	public byte[] encrypt(byte[] data);
+	public byte[] encrypt(byte[] data, int rounds);
 }
